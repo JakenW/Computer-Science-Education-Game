@@ -1,16 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+body {
+font-family: Arial;
+}
+
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #A6D0FF;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+@media screen and (max-width: 300px)
+ {
+  span.psw {
+     display: block;
+     float: none;
+  }
+
+}
+</style>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login_Form</title>
 </head>
 <body>
     <button onclick="window.location.href = 'index.html';">GO BACK</button>
 
-    <button onclick="window.location.href = 'index.html';">USERNAME</button>
-    <button onclick="window.location.href = 'index.html';">PASSWORD</button>
-    <button onclick="window.location.href = 'index.html';">LOGIN</button>
 
+<h2><center>Login Form</center></h2>
+
+  <div class="container">
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="uname" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" required>
+
+    <label for="password"><b>Confirm Password</b></label>
+    <input type="password" placeholder="Confirm Password" name="psw" required>
+
+      <button type="submit">LOGIN</button>
+
+  </div>
+
+  </div>
 
 </body>
 </html>
