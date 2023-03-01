@@ -52,19 +52,20 @@ span.psw {
     <title>Login_Form</title>
 </head>
 <body>
-    <button onclick="window.location.href = 'index.html';">GO BACK</button>
+<form method = "post" action='#'>
+    <button onclick="window.location.href = 'http://127.0.0.1:5000/';">GO BACK</button>
 
 
 <h2><center>Login Form</center></h2>
 
   <div class="container">
     <label for="username"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
+    <input type="text" placeholder="Enter Username" name="accname" required>
 
     <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
+    <input type="password" placeholder="Enter Password" name="accpass" required>
     <br>
-      <button onclick="window.location.href = 'game.html';">LOGIN</button>
+      <button type="submit">LOGIN</button>
 
 
   </div>
