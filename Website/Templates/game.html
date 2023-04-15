@@ -2,8 +2,8 @@
 <html lang="en">
 <style>
 .game_box{
-width: 500px;
-height: 300px;
+width: 640px;
+height: 320px;
 border: 1px solid black;
 margin: 0;
 padding: 0;
@@ -17,18 +17,19 @@ margin: 0;
 padding: 0;
 }
 </style>
+
 <head>
     <meta charset="UTF-8">
     <title>Game Page</title>
 </head>
 <body>
 <center>
-        <button onclick="window.location.href = 'index.html';">GO BACK</button>
+        <button onclick="window.location.href = 'http://127.0.0.1:5000/';">GO BACK</button>
 
 <h3>This is where the game will be!</h3>
     <div class="game_box">
 
-        <b>GAME</b>
+        <canvas style="border: 5px solid #000000;">Update your browser to support HTML5 Canvas</canvas>
 
     </div>
     <br>
@@ -42,11 +43,123 @@ padding: 0;
         <br>
         D = RIGHT
         <br>
-
-
-
     </div>
 
 </center>
 </body>
 </html>
+
+<!-- <canvas style="border: 5px solid #000000;">Update your browser to support HTML5 Canvas</canvas> -->
+<!--<script src = "{{url_for('static', filename='dbtest.js')}}"></script>-->
+<script>
+const canvas = document.querySelector("canvas");
+const c = canvas.getContext("2d")
+
+canvas.width = 640
+canvas.height = 320
+
+c.fillStyle = "white"   //Color of the canvas
+c.fillRect(0, 0, canvas.width, canvas.height) //This creates the interactable canvas where the game will run
+
+
+const image = new Image()   //Creating the background
+image.src = "{{url_for('static', filename='teacher_office.png')}}" //"./images/teacher_office.png"   //Create html image in javascript 
+
+const playerImage = new Image()
+playerImage.src = "{{url_for('static', filename='playerDownsmall.png')}}" //'./images/playerDownsmall.png'
+
+class Sprite {
+    constructor({position, velocity, image}) {
+        this.position = position
+        this.image = image
+    }
+
+    draw() {
+        c.drawImage(this.image, this.position.x, this.position.y)
+    }
+}
+
+const background = new Sprite({position: {
+    x: 0,
+    y: 0
+    },
+    image: image
+})
+
+
+const keys = {
+    w: {
+        pressed: false
+    },
+    a: {
+        pressed: false
+    },
+    s: {
+        pressed: false
+    },
+    d: {
+        pressed: false
+    }
+}
+
+function animate() {
+    window.requestAnimationFrame(animate)
+    background.draw()
+    c.drawImage(
+        playerImage,        //Crop the Image
+        0,
+        0,
+        playerImage.width /3.3,
+        playerImage.height,
+        canvas.width / 2 - (playerImage.width / 4) / 2,      //Center the player on screen
+        canvas.height / 2 - playerImage.height / 2,    //Define the offset 
+        playerImage.width /3.3,
+        playerImage.height,
+    )
+
+    if (keys.w.pressed && lastkey === "w")    background.position.y += 3
+    else if (keys.a.pressed && lastkey === "a")    background.position.x += 3
+    else if (keys.s.pressed && lastkey === "s")    background.position.y -= 3
+    else if (keys.d.pressed && lastkey === "d")    background.position.x -= 3
+}
+animate()
+
+let lastkey = ""
+window.addEventListener("keydown", (e) => { //Create a key reader
+    switch (e.key){
+        case "w":
+            keys.w.pressed =true
+            lastkey = "w"
+            break
+        case "a":
+            keys.a.pressed =true
+            lastkey = "a"
+            break
+        case "s":
+            keys.s.pressed =true
+            lastkey = "s"
+            break
+        case "d":
+            keys.d.pressed =true
+            lastkey = "d"
+            break        
+    }
+})
+
+window.addEventListener("keyup", (e) => { //Create a key releaser
+    switch (e.key){
+        case "w":
+            keys.w.pressed =false
+            break
+        case "a":
+            keys.a.pressed =false
+            break
+        case "s":
+            keys.s.pressed =false
+            break
+        case "d":
+            keys.d.pressed =false
+            break        
+    }
+})
+</script>
