@@ -113,11 +113,179 @@ def play():
 
 
 #Route play the nonogram puzzles 
-@app.route("/puzzle/")
-def puzzle():
-    return render_template("puzzle.html")
+@app.route("/puzzletest/")
+def puzzletest():
+    con = sql.connect("dormagoo.db")
+    cur = con.cursor()
+    cur.execute("select * from PUZZLES where ID = ?", (1, ))
+    testPuzzle = cur.fetchone()
+    
+    #Obtain data from the db and make it integer lists
+    puzzleRowList = []
+    for i in range(len(testPuzzle)):
+        if(i == 0):
+            continue
+        else:
+            currentRow = testPuzzle[i].split(" ")
+            currentRow = list(map(int, currentRow))
+            puzzleRowList.append(currentRow)
+            
+    return render_template("puzzletest.html", puzzle = puzzleRowList)
+
+#This route allows the user to create questions which get added to the database
+@app.route("/createquestion/", methods=["POST", "GET"])
+def createquestion():
+    #If the request method is post, we want to verify input info with account database
+    if request.method == "POST":
+        #These lines extract user data from the form
+        question = request.form["question"]           #question
+        mco1 = request.form["mco1"]                   #option 1
+        mco2 = request.form["mco2"]                   #option 2
+        mco3 = request.form["mco3"]                   #option 3
+        mco4 = request.form["mco4"]                   #option 4
+        answer = request.form["answer"]               #correct answer
+        
+        #remove potential trailing white space on the answer to check if it is an acceptable answer
+        answer = answer.strip()
+        
+        '''
+        Iterate through a list of the possible correct answer choices a user
+        could input. If the user's input is not a valid answer, redirect them
+        to an unsuccessful page telling them they entered an invalid answer.
+        
+        Otherwise, continue to adding to the database
+        '''
+        possibleAnswers = ["1", "2", "3", "4"]
+        isPossibleAnswer = False
+        for i in range(len(possibleAnswers)):
+            if(answer == possibleAnswers[i]):
+                isPossibleAnswer = True
+        
+        if(isPossibleAnswer == False):
+            return render_template("question_unsuccessans.html")
+
+        #if we have nade it to this line, now add question to database with user input information
+        con = sql.connect("dormagoo.db")
+        cur = con.cursor()
+        cur.execute("insert into QUESTIONS(QUEST, MCO1, MCO2, MCO3, MCO4, ANSWER) values (?,?,?,?,?,?)", (question, mco1, mco2, mco3, mco4, answer))
+        con.commit()
+        
+        return render_template("question_confirm.html")
+    
+    return render_template("createquestion.html")
+    
+#This route tests the visual novel aspect created by Christina
+@app.route("/VNtest")
+def VNtest():
+    return render_template("vntest.html")
+
+#This route tests the question proposal aspect created by Christina
+@app.route("/MCtest")
+def MCtest():
+    return render_template("mctest.html")
+
+@app.route("/puzzletest2/")
+def puzzletest2():
+    con = sql.connect("dormagoo.db")
+    cur = con.cursor()
+    cur.execute("select * from PUZZLES where ID = ?", (1, ))
+    testPuzzle = cur.fetchone()
+    
+    #Obtain data from the db and make it integer lists
+    puzzleRowList = []
+    for i in range(len(testPuzzle)):
+        if(i == 0):
+            continue
+        else:
+            currentRow = testPuzzle[i].split(" ")
+            currentRow = list(map(int, currentRow))
+            puzzleRowList.append(currentRow)
+    
+    #Generate the labels needed for the puzzle
+    xLabels = createXLabels(puzzleRowList)
+    yLabels = createYLabels(puzzleRowList)
+    
+    return render_template("puzzletest2.html", puzzle = puzzleRowList, xLabs = xLabels, yLabs = yLabels)
+
+
+
+
+#These functions are used to generate the text labels for the puzzle
+'''
+Given a nonogram puzzle, this function dynamically
+creates the necessary Y-axis labels for the puzzle
+'''    
+def createYLabels(p):
+    YLabels = []
+    for row in p:
+        #print(row)
+        curRowLab = ""
+        curLabVal = 0
+        for i in range(len(row)):
+            #print(row[i])
+            if(row[i] == 1):
+                curLabVal += 1
+            if(row[i] == 0):
+                if(curLabVal != 0):
+                    curRowLab += str(curLabVal) + " "
+                    curLabVal = 0
+            #do something here to remove any potential extra spaces on end
+            if(i == len(row)-1 and curLabVal == 0):              
+                rowLength = len(curRowLab)
+                if(rowLength == 0):
+                    curRowLab += str(curLabVal)
+                else:
+                    rowLength -= 1
+                    if(curRowLab[rowLength] == " "):
+                        curRowLab = curRowLab[:rowLength]
+            
+            if(i == len(row)-1 and curLabVal != 0):
+                curRowLab += str(curLabVal)
+                
+        YLabels.append(curRowLab)
+    #print("Y Labels:", YLabels)
+    return YLabels
+
+'''
+Given a nonogram puzzle, this function dynamically
+creates the necessary X-axis labels for the puzzle
+'''    
+def createXLabels(p):
+    XLabels = []
+    #print(len(p))
+    #print(p[0][0])
+
+    for i in range(len(p)):
+        curRowLab = ""
+        curLabVal = 0
+        for j in range(len(p[i])):
+            #print(p[j][i], i, j)
+            if(p[j][i] == 1):
+                curLabVal += 1
+            if(p[j][i] == 0):
+                if(curLabVal != 0):
+                    curRowLab += str(curLabVal) + " "
+                    curLabVal = 0
+            
+            #do something here to remove any potential extra spaces on end
+            if(j == len(p[i])-1 and curLabVal == 0):
+                rowLength = len(curRowLab)
+                if(rowLength == 0):
+                    curRowLab += str(curLabVal)
+                else:
+                    rowLength -= 1
+                    if(curRowLab[rowLength] == " "):
+                        curRowLab = curRowLab[:rowLength]
+            
+            if(j == len(p[i])-1 and curLabVal != 0):
+                curRowLab += str(curLabVal)
+                
+        XLabels.append(curRowLab)
+        
+    #print("X Labels:", XLabels)
+    return XLabels
+
 
 #This drives the program by Running the Flask App
 if __name__ == "__main__":
     app.run(debug=True)
-    
