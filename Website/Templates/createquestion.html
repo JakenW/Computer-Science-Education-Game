@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+body {
+font-family: Arial;
+}
+
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #A6D0FF;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+@media screen and (max-width: 300px)
+ {
+  span.psw {
+     display: block;
+     float: none;
+  }
+
+}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Question Creation Form</title>
+</head>
+<body>
+<form method = "post" action='#'>
+    <button onclick="window.location.href = 'http://127.0.0.1:5000/';">GO BACK</button>
+
+
+<h2><center>Question Creation Form</center></h2>
+
+  <div class="container">
+    <label for="question"><b>Question</b></label>
+    <input type="text" placeholder="Enter Question" name="question" required>
+
+    <label for="option1"><b>Option 1</b></label>
+    <input type="text" placeholder="Answer Choice 1" name="mco1" required>
+
+    <label for="option2"><b>Option 2</b></label>
+    <input type="text" placeholder="Answer Choice 2" name="mco2" required>
+	
+	<label for="option3"><b>Option 3</b></label>
+    <input type="text" placeholder="Answer Choice 3" name="mco3" required>
+
+    <label for="option4"><b>Option 4</b></label>
+    <input type="text" placeholder="Answer Choice 4" name="mco4" required>
+
+    <label for="answer"><b>Correct Answer</b></label>
+    <input type="text" placeholder="Put the number for the answer choice containing the correct answer (Ex. 1)" name="answer" required>
+
+    <button type="submit">Create</button>
+
+  </div>
+
+  </div>
+
+</body>
+</html>
