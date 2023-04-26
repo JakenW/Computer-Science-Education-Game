@@ -10,7 +10,6 @@ conn = sqlite3.connect("dormagoo.db")
 
 print("Databased opened")
 
-"""
 conn.execute('''CREATE TABLE ACCOUNTS
          (ID INTEGER PRIMARY KEY     AUTOINCREMENT,
          ACCNAME           TEXT    NOT NULL,
@@ -25,10 +24,10 @@ conn.execute('''CREATE TABLE QUESTIONS
          MCO3           TEXT    NOT NULL,
          MCO4           TEXT    NOT NULL,
          ANSWER           TEXT    NOT NULL);''')
-"""
        
 conn.execute('''CREATE TABLE PUZZLES
          (ID INTEGER PRIMARY KEY     AUTOINCREMENT,
+         ROW0           TEXT    NOT NULL,
          ROW1           TEXT    NOT NULL,
          ROW2           TEXT    NOT NULL,
          ROW3           TEXT    NOT NULL,
