@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Game Page</title>
+<link rel="stylesheet" href="style.css">
+</head>
 <style>
 .game_box{
 width: 640px;
@@ -18,23 +24,27 @@ padding: 0;
 }
 </style>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Game Page</title>
-</head>
-<body>
-<center>
-        <button onclick="window.location.href = 'http://127.0.0.1:5000/';">GO BACK</button>
 
-<h3>This is where the game will be!</h3>
+<body>
+    <!-- Navigation Bar -->
+<div class="topnav">
+    <a class="active" href="#home">HOME</a>
+    <a href="#registerpage">REGISTER</a>
+    <a href="#loginpage">LOGIN</a>
+    <a href="#puzzle">PUZZLE</a>
+    <a href="#game">GAME</a>
+  </div>
+<center>
+    <br>
+ 
     <div class="game_box">
 
         <canvas style="border: 5px solid #000000;">Update your browser to support HTML5 Canvas</canvas>
 
     </div>
     <br>
-    <div class="controls_box"><u>FILLER TEXT FOR CONTROLS</u>
-    <br>
+    <div class="controls_box">
+    <h4><u>CONTROLS</u></h2>
         W = UP
         <br>
         A = LEFT
