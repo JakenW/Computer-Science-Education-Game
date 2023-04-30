@@ -253,29 +253,33 @@ def userPuzzleTest():
 #This route handles the request sent from the create puzzle page
 @app.route("/userPuzzleTest2", methods=["POST", "GET"])
 def userPuzzleTest2():
-    #If the request method is post, we want to verify input info with account database
+    #If the request method is post, we want to put the user's puzzle in the database
+    #All logging comments have been commented out but were essential for troubleshooting
     if request.method == "POST":
-        #These lines extract user data from the form
-        
         #puzzle is received but is one long string
         puzzle = request.form["usrpzl"]           #puzzleboard made by user
-        print(puzzle, file=sys.stderr)
-        logging.info(puzzle)
-        logging.info(type(puzzle))
-        
-        #rowStrList = puzzleToString(puzzle)
+        #logging.info(puzzle)
+        #logging.info(type(puzzle))
         
         #replaces the puzzle's commas with spaces
         puzzle = puzzle.replace(",", " ")
-        logging.info(puzzle)
+        #logging.info(puzzle)
+        
+        '''
+        Check to see if the puzzle contains any selected tiles (1's),
+        if not, then redirect them to the failed page and tell them they need
+        to select at least 1 tile to make a puzzle
+        '''
+        if("1" not in puzzle):
+            return render_template("puzzleFail.html")
         
         #split the puzzle string based on spaces to get all tiles
         splitTiles = puzzle.split(" ")
-        logging.info(splitTiles)
+        #logging.info(splitTiles)
         
         #convert list of puzzle tiles into list of puzzle rows as strings
         puzzleRows = jsPuzToString(splitTiles)
-        logging.info(puzzleRows)
+        #logging.info(puzzleRows)
         
         #add puzzle to database
         con = sql.connect("dormagoo.db")
@@ -288,13 +292,7 @@ def userPuzzleTest2():
     
     
     return render_template("makepuzzle2.html")
-    '''
-    userPuzzle = request.get_json()     #Load the recieved json into a variable
-    puzzleboard = userPuzzle["puzzle"]
-    print(puzzleboard)
-    sys.stdout.flush()
-    return render_template("index.html")
-    '''
+
 
 #Route which takes users to the puzzle directory
 @app.route("/puzzles")
@@ -312,7 +310,31 @@ def puzzles():
     
     return render_template("puzzledirectory.html", data = puzzles)
 
-
+#Route which takes users to the puzzle they have indicated they would like to play
+@app.route("/playpuzzle:<string:pid>", methods=["POST", "GET"])
+def playpuzzle(pid):
+    #Database connection to obtain puzzle info based on ID from webpage
+    con = sql.connect("dormagoo.db")
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    cur.execute("select * from PUZZLES where ID = ?", (pid, ))
+    puzzleResult = cur.fetchone()
+    
+    #Obtain data from the db and make it integer lists
+    puzzleRowList = []
+    for i in range(len(puzzleResult)):
+        if(i == 0):
+            continue
+        else:
+            currentRow = puzzleResult[i].split(" ")
+            currentRow = list(map(int, currentRow))
+            puzzleRowList.append(currentRow)
+    
+    #Generate the labels needed for the puzzle
+    xLabels = createXLabels(puzzleRowList)
+    yLabels = createYLabels(puzzleRowList)
+    
+    return render_template("puzzletest2.html", puzzle = puzzleRowList, xLabs = xLabels, yLabs = yLabels)
 
 
 #These functions are used to generate the text labels for the puzzle
