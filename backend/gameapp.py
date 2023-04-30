@@ -118,26 +118,6 @@ def play():
     return render_template("game.html")
 
 
-#Route play the nonogram puzzles 
-@app.route("/puzzletest/")
-def puzzletest():
-    con = sql.connect("dormagoo.db")
-    cur = con.cursor()
-    cur.execute("select * from PUZZLES where ID = ?", (1, ))
-    testPuzzle = cur.fetchone()
-    
-    #Obtain data from the db and make it integer lists
-    puzzleRowList = []
-    for i in range(len(testPuzzle)):
-        if(i == 0):
-            continue
-        else:
-            currentRow = testPuzzle[i].split(" ")
-            currentRow = list(map(int, currentRow))
-            puzzleRowList.append(currentRow)
-            
-    return render_template("puzzletest.html", puzzle = puzzleRowList)
-
 #This route allows the user to create questions which get added to the database
 @app.route("/createquestion/", methods=["POST", "GET"])
 def createquestion():
@@ -218,37 +198,6 @@ def puzzletest2():
 def createpuzzle():
     return render_template("makepuzzle.html")
 
-#This route handles the request sent from the create puzzle page
-@app.route("/ProcessPuzzle/<string:board>", methods=["POST"])
-def ProcessPuzzle(board):
-    puzzleboard = json.loads(board)     #Load the recieved json into a variable
-    print(puzzleboard)
-    
-
-#This route handles the request sent from the create puzzle page
-@app.route("/userPuzzleTest", methods=["POST", "GET"])
-def userPuzzleTest():
-    if request.method == "POST":
-        userPuzzle = request.get_json()     #Load the recieved json into a variable
-        puzzleboard = userPuzzle["puzzle"]
-        print(puzzleboard)
-        sys.stdout.flush()
-    
-        #Convert puzzle to string
-        rowStrList = puzzleToString(puzzleboard)
-        logging.info(puzzleboard)
-        logging.info(rowStrList)
-    
-        #Add to database
-        con = sql.connect("dormagoo.db")
-        cur = con.cursor()
-        cur.execute("insert into PUZZLE(ROW0,ROW1,ROW2,ROW3,ROW4,ROW5,ROW6,ROW7,ROW8,ROW9,ROW10) values (?,?,?,?,?,?,?,?,?,?,?)", 
-                (rowStrList[0], rowStrList[1], rowStrList[2], rowStrList[3], rowStrList[4], rowStrList[5], rowStrList[6], rowStrList[7], rowStrList[8], rowStrList[9], rowStrList[10]))
-        con.commit()
-        
-        return render_template("question_confirm.html")
-    
-    return render_template("makepuzzle.html")
 
 #This route handles the request sent from the create puzzle page
 @app.route("/userPuzzleTest2", methods=["POST", "GET"])
@@ -411,29 +360,6 @@ def createXLabels(p):
         
     #print("X Labels:", XLabels)
     return XLabels
-
-'''
-Given a nonogram puzzle, this function will convert
-the rows of the puzzle into strings so that 
-it can be stored within the SQL database
-'''
-def puzzleToString(p):
-    puzzleString = []
-    for i in range(len(p)):
-        #print(p[i])
-        rowAsString = ""
-        for j in range(len(p)):
-            #print(puzzle[i][j])
-            
-            #These if else are to prevent trailing space
-            if(j == len(p)-1):
-                rowAsString += str(p[i][j])
-            else:
-                rowAsString += str(p[i][j]) + " "
-        #print(rowAsString)
-        puzzleString.append(rowAsString)
-    
-    return puzzleString
 
 
 '''
