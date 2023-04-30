@@ -7,9 +7,15 @@ Created on Mon Feb  6 16:31:31 2023
 
 from flask import Flask, redirect, url_for, render_template, request, session
 import sqlite3 as sql
+import json
+import sys
+import logging
 
 #Creating the flask app
 app = Flask(__name__)
+
+#
+logging.basicConfig(filename='data.log', level=logging.DEBUG)
 
 #Creating a secret key for the flask app. Required when using sessions.
 app.secret_key = "thebestsecretkeyintheworldyep100percentthebestnodoubt"
@@ -207,6 +213,105 @@ def puzzletest2():
     
     return render_template("puzzletest2.html", puzzle = puzzleRowList, xLabs = xLabels, yLabs = yLabels)
 
+#This route tests creating a puzzle 
+@app.route("/createpuzzle")
+def createpuzzle():
+    return render_template("makepuzzle.html")
+
+#This route handles the request sent from the create puzzle page
+@app.route("/ProcessPuzzle/<string:board>", methods=["POST"])
+def ProcessPuzzle(board):
+    puzzleboard = json.loads(board)     #Load the recieved json into a variable
+    print(puzzleboard)
+    
+
+#This route handles the request sent from the create puzzle page
+@app.route("/userPuzzleTest", methods=["POST", "GET"])
+def userPuzzleTest():
+    if request.method == "POST":
+        userPuzzle = request.get_json()     #Load the recieved json into a variable
+        puzzleboard = userPuzzle["puzzle"]
+        print(puzzleboard)
+        sys.stdout.flush()
+    
+        #Convert puzzle to string
+        rowStrList = puzzleToString(puzzleboard)
+        logging.info(puzzleboard)
+        logging.info(rowStrList)
+    
+        #Add to database
+        con = sql.connect("dormagoo.db")
+        cur = con.cursor()
+        cur.execute("insert into PUZZLE(ROW0,ROW1,ROW2,ROW3,ROW4,ROW5,ROW6,ROW7,ROW8,ROW9,ROW10) values (?,?,?,?,?,?,?,?,?,?,?)", 
+                (rowStrList[0], rowStrList[1], rowStrList[2], rowStrList[3], rowStrList[4], rowStrList[5], rowStrList[6], rowStrList[7], rowStrList[8], rowStrList[9], rowStrList[10]))
+        con.commit()
+        
+        return render_template("question_confirm.html")
+    
+    return render_template("makepuzzle.html")
+
+#This route handles the request sent from the create puzzle page
+@app.route("/userPuzzleTest2", methods=["POST", "GET"])
+def userPuzzleTest2():
+    #If the request method is post, we want to verify input info with account database
+    if request.method == "POST":
+        #These lines extract user data from the form
+        
+        #puzzle is received but is one long string
+        puzzle = request.form["usrpzl"]           #puzzleboard made by user
+        print(puzzle, file=sys.stderr)
+        logging.info(puzzle)
+        logging.info(type(puzzle))
+        
+        #rowStrList = puzzleToString(puzzle)
+        
+        #replaces the puzzle's commas with spaces
+        puzzle = puzzle.replace(",", " ")
+        logging.info(puzzle)
+        
+        #split the puzzle string based on spaces to get all tiles
+        splitTiles = puzzle.split(" ")
+        logging.info(splitTiles)
+        
+        #convert list of puzzle tiles into list of puzzle rows as strings
+        puzzleRows = jsPuzToString(splitTiles)
+        logging.info(puzzleRows)
+        
+        #add puzzle to database
+        con = sql.connect("dormagoo.db")
+        cur = con.cursor()
+        cur.execute("insert into PUZZLES(ROW0,ROW1,ROW2,ROW3,ROW4,ROW5,ROW6,ROW7,ROW8,ROW9,ROW10) values (?,?,?,?,?,?,?,?,?,?,?)", 
+                (puzzleRows[0], puzzleRows[1], puzzleRows[2], puzzleRows[3], puzzleRows[4], puzzleRows[5], puzzleRows[6], puzzleRows[7], puzzleRows[8], puzzleRows[9], puzzleRows[10]))
+        con.commit()
+        
+        return render_template("question_confirm.html")
+    
+    
+    return render_template("makepuzzle2.html")
+    '''
+    userPuzzle = request.get_json()     #Load the recieved json into a variable
+    puzzleboard = userPuzzle["puzzle"]
+    print(puzzleboard)
+    sys.stdout.flush()
+    return render_template("index.html")
+    '''
+
+#Route which takes users to the puzzle directory
+@app.route("/puzzles")
+def puzzles():
+    '''
+    Here the database is connected to so all the puzzle data can be obtained
+    and passed to the front end so the user can choose which puzzle
+    they would like to play
+    '''
+    con = sql.connect("dormagoo.db")
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    cur.execute("select * from PUZZLES")
+    puzzles = cur.fetchall()
+    
+    return render_template("puzzledirectory.html", data = puzzles)
+
 
 
 
@@ -285,7 +390,52 @@ def createXLabels(p):
     #print("X Labels:", XLabels)
     return XLabels
 
+'''
+Given a nonogram puzzle, this function will convert
+the rows of the puzzle into strings so that 
+it can be stored within the SQL database
+'''
+def puzzleToString(p):
+    puzzleString = []
+    for i in range(len(p)):
+        #print(p[i])
+        rowAsString = ""
+        for j in range(len(p)):
+            #print(puzzle[i][j])
+            
+            #These if else are to prevent trailing space
+            if(j == len(p)-1):
+                rowAsString += str(p[i][j])
+            else:
+                rowAsString += str(p[i][j]) + " "
+        #print(rowAsString)
+        puzzleString.append(rowAsString)
+    
+    return puzzleString
+
+
+'''
+Given the puzzle from javascript, this function will convert
+the list containing all tiles information rows of strings so that  
+it can be stored within the SQL database
+'''
+def jsPuzToString(sp):
+    rowList = []
+    curRow = ""
+    counter = 0
+    for i in range(len(sp)):
+        if(counter == 10):
+            curRow += sp[i]
+            rowList.append(curRow)
+            curRow = ""
+            counter = 0
+        else:
+            curRow += sp[i] + " "
+            counter += 1
+    return rowList
+
 
 #This drives the program by Running the Flask App
 if __name__ == "__main__":
     app.run(debug=True)
+    #
