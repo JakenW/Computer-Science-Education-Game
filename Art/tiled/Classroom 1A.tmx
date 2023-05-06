@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
- <tileset firstgid="1" source="PC Computer - Omori - White Space.tsx"/>
- <tileset firstgid="37" source="Interiors_free_32x32.tsx"/>
- <tileset firstgid="1461" source="PC Computer - Omori - Faraway Town Interior Homes Sunset.tsx"/>
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+ <tileset firstgid="1" source="tilesets/PC Computer - Omori - White Space.tsx"/>
+ <tileset firstgid="37" source="tilesets/Modern tiles_Free/Interiors_free_32x32.tsx"/>
+ <tileset firstgid="1461" source="tilesets/PC Computer - Omori - Faraway Town Interior Homes Sunset.tsx"/>
  <layer id="1" name="Wall/Floor" width="10" height="10" locked="1">
   <data encoding="csv">
 1530,1530,1530,1530,1530,1530,1530,1530,1530,1530,
@@ -24,21 +24,7 @@
 0,0,0,0,706,707,0,0,0,0,
 0,0,0,0,0,655,656,657,0,0,
 0,0,0,0,0,671,672,673,0,0,
-0,0,0,615,0,0,615,0,0,0,
-0,0,0,631,0,0,631,0,0,0,
-0,0,0,615,0,0,615,0,0,0,
-0,0,0,631,0,0,631,0,0,0,
-0,0,0,0,0,0,0,0,0,0
-</data>
- </layer>
- <layer id="5" name="Tile Layer 4" width="10" height="10" locked="1">
-  <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,
-3084,0,0,0,0,0,0,0,0,0,
-3116,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
@@ -53,18 +39,18 @@
 0,0,0,0,0,0,1746,0,3164,0,
 0,0,0,0,0,0,0,0,3196,0,
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,1805,0,0,1805,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,1805,0,0,1805,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="7" name="Tile Layer 6" width="10" height="10">
+ <layer id="7" name="Tile Layer 6" width="10" height="10" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,1720,
-0,0,0,0,0,0,0,0,0,1720,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
@@ -87,14 +73,14 @@
 0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="Tile Layer 3" width="10" height="10" locked="1">
+ <layer id="3" name="Tile Layer 3" width="10" height="10">
   <data encoding="csv">
 0,0,0,2367,2367,2367,2367,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 1631,0,0,0,0,0,0,0,0,0,
 1663,0,3034,0,0,0,0,0,0,0,
-1695,3181,3066,0,0,2784,0,0,0,0,
-0,3213,0,0,0,0,0,0,0,0,
+1695,0,3066,0,0,2784,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
