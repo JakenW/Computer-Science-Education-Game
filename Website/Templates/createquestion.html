@@ -1,87 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSEducationGame</title>
+<link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+</head>
 <style>
 body {
 font-family: Arial;
 }
 
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-button {
-  background-color: #A6D0FF;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
-.container {
-  padding: 16px;
-}
-
-span.psw {
-  float: right;
-  padding-top: 16px;
-}
-
-@media screen and (max-width: 300px)
- {
-  span.psw {
-     display: block;
-     float: none;
-  }
-
-}
 </style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Question Creation Form</title>
+    <title>Register Form</title>
 </head>
 <body>
+<!-- Navigation Bar -->
+<div class="topnav">
+    <ul>
+      <a class="active" href="http://127.0.0.1:5000/">HOME</a>
+      <a href="http://127.0.0.1:5000/register">REGISTER</a>
+      <a href="http://127.0.0.1:5000/login">LOGIN</a>
+	  <a href="http://127.0.0.1:5000/createquestion">CREATE QUESTION</a>
+     <a href="http://127.0.0.1:5000/play">GAME</a>
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn">PUZZLE</a>
+      <div class="dropdown-content">
+        <a href="http://127.0.0.1:5000/puzzles">Puzzle Library</a>
+        <a href="http://127.0.0.1:5000/createpuzzle">Create a Puzzle</a>
+      </div>
+    </li>
+    </ul>
+</div>
 <form method = "post" action='#'>
-    <button onclick="window.location.href = 'http://127.0.0.1:5000/';">GO BACK</button>
 
-
-<h2><center>Question Creation Form</center></h2>
+<h2><center><u>Question Creation Form</u></center></h2>
+<p><center>Enter a Multiple Choice Question with 4 Possible Answers. Make sure to put the Correct Answer Option in the right location!</center></p>
 
   <div class="container">
     <label for="question"><b>Question</b></label>
     <input type="text" placeholder="Enter Question" name="question" required>
 
     <label for="option1"><b>Option 1</b></label>
-    <input type="text" placeholder="Answer Choice 1" name="mco1" required>
+    <input type="text" placeholder="Possible Answer Choice 1" name="mco1" required>
 
     <label for="option2"><b>Option 2</b></label>
-    <input type="text" placeholder="Answer Choice 2" name="mco2" required>
+    <input type="text" placeholder="Possible Answer Choice 2" name="mco2" required>
 	
 	<label for="option3"><b>Option 3</b></label>
-    <input type="text" placeholder="Answer Choice 3" name="mco3" required>
-
-    <label for="option4"><b>Option 4</b></label>
-    <input type="text" placeholder="Answer Choice 4" name="mco4" required>
+    <input type="text" placeholder="Possible Answer Choice 3" name="mco3" required>
 
     <label for="answer"><b>Correct Answer</b></label>
-    <input type="text" placeholder="Put the number for the answer choice containing the correct answer (Ex. 1)" name="answer" required>
+    <input type="text" placeholder="Correct Answer Choice" name="answer" required>
 
-    <button type="submit">Create</button>
-
-  </div>
-
+    <button type="submit">Create Question</button>
   </div>
 
 </body>
 </html>
+
+
+
+
+  
