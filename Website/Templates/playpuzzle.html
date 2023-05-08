@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play Puzzle</title>
+<link rel="stylesheet" href="{{url_for('static', filename='puzzle.css')}}">
+</head>
+<body>
+<!-- Navigation Bar -->
+<div class="topnav">
+    <ul>
+      <a class="active" href="http://127.0.0.1:5000/">HOME</a>
+      <a href="http://127.0.0.1:5000/register">REGISTER</a>
+      <a href="http://127.0.0.1:5000/login">LOGIN</a>
+	  <a href="http://127.0.0.1:5000/createquestion">CREATE QUESTION</a>
+     <a href="http://127.0.0.1:5000/play">GAME</a>
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn">PUZZLE</a>
+      <div class="dropdown-content">
+        <a href="http://127.0.0.1:5000/puzzles">Puzzle Library</a>
+        <a href="http://127.0.0.1:5000/createpuzzle">Create a Puzzle</a>
+      </div>
+    </li>
+    </ul>
+</div>
+
+<h1 id="headline">Nonogram Puzzle</h1>
+<center><article>
+    <button id="reveal" class="instr-label" onClick="toggleInstructions()">Instructions</a>
+</article></center>
+
+    <div id="puzzle-full">
+        <section class="topkey">
+            <div id="c0r0"></div>
+            <div id="c1r0">{{xLabs[1]}}</div>
+            <div id="c2r0">{{xLabs[2]}}</div>
+            <div id="c3r0">{{xLabs[3]}}</div>
+            <div id="c4r0">{{xLabs[4]}}</div>
+            <div id="c5r0">{{xLabs[5]}}</div>
+            <div id="c6r0">{{xLabs[6]}}</div>
+            <div id="c7r0">{{xLabs[7]}}</div>
+            <div id="c8r0">{{xLabs[8]}}</div>
+            <div id="c9r0">{{xLabs[9]}}</div>
+            <div id="c10r0">{{xLabs[10]}}</div>
+        </section>
+        <section id="puzzleboard">
+            <div class="leftkey" id="c0r1">{{yLabs[1]}}</div>
+            <div id="c1r1"></div>
+            <div id="c2r1"></div>
+            <div id="c3r1"></div>
+            <div id="c4r1"></div>
+            <div id="c5r1"></div>
+            <div id="c6r1"></div>
+            <div id="c7r1"></div>
+            <div id="c8r1"></div>
+            <div id="c9r1"></div>
+            <div id="c10r1"></div>
+
+            <div class="leftkey" id="c0r2">{{yLabs[2]}}</div>
+            <div id="c1r2"></div>
+            <div id="c2r2"></div>
+            <div id="c3r2"></div>
+            <div id="c4r2"></div>
+            <div id="c5r2"></div>
+            <div id="c6r2"></div>
+            <div id="c7r2"></div>
+            <div id="c8r2"></div>
+            <div id="c9r2"></div>
+            <div id="c10r2"></div>
+
+            <div class="leftkey" id="c0r3">{{yLabs[3]}}</div>
+            <div id="c1r3"></div>
+            <div id="c2r3"></div>
+            <div id="c3r3"></div>
+            <div id="c4r3"></div>
+            <div id="c5r3"></div>
+            <div id="c6r3"></div>
+            <div id="c7r3"></div>
+            <div id="c8r3"></div>
+            <div id="c9r3"></div>
+            <div id="c10r3"></div>
+
+            <div class="leftkey" id="c0r4">{{yLabs[4]}}</div>
+            <div id="c1r4"></div>
+            <div id="c2r4"></div>
+            <div id="c3r4"></div>
+            <div id="c4r4"></div>
+            <div id="c5r4"></div>
+            <div id="c6r4"></div>
+            <div id="c7r4"></div>
+            <div id="c8r4"></div>
+            <div id="c9r4"></div>
+            <div id="c10r4"></div>
+
+            <div class="leftkey" id="c0r5">{{yLabs[5]}}</div>
+            <div id="c1r5"></div>
+            <div id="c2r5"></div>
+            <div id="c3r5"></div>
+            <div id="c4r5"></div>
+            <div id="c5r5"></div>
+            <div id="c6r5"></div>
+            <div id="c7r5"></div>
+            <div id="c8r5"></div>
+            <div id="c9r5"></div>
+            <div id="c10r5"></div>
+
+            <div class="leftkey" id="c0r6">{{yLabs[6]}}</div>
+            <div id="c1r6"></div>
+            <div id="c2r6"></div>
+            <div id="c3r6"></div>
+            <div id="c4r6"></div>
+            <div id="c5r6"></div>
+            <div id="c6r6"></div>
+            <div id="c7r6"></div>
+            <div id="c8r6"></div>
+            <div id="c9r6"></div>
+            <div id="c10r6"></div>
+
+            <div class="leftkey" id="c0r7">{{yLabs[7]}}</div>
+            <div id="c1r7"></div>
+            <div id="c2r7"></div>
+            <div id="c3r7"></div>
+            <div id="c4r7"></div>
+            <div id="c5r7"></div>
+            <div id="c6r7"></div>
+            <div id="c7r7"></div>
+            <div id="c8r7"></div>
+            <div id="c9r7"></div>
+            <div id="c10r7"></div>
+
+            <div class="leftkey" id="c0r8">{{yLabs[8]}}</div>
+            <div id="c1r8"></div>
+            <div id="c2r8"></div>
+            <div id="c3r8"></div>
+            <div id="c4r8"></div>
+            <div id="c5r8"></div>
+            <div id="c6r8"></div>
+            <div id="c7r8"></div>
+            <div id="c8r8"></div>
+            <div id="c9r8"></div>
+            <div id="c10r8"></div>
+
+            <div class="leftkey" id="c0r9">{{yLabs[9]}}</div>
+            <div id="c1r9"></div>
+            <div id="c2r9"></div>
+            <div id="c3r9"></div>
+            <div id="c4r9"></div>
+            <div id="c5r9"></div>
+            <div id="c6r9"></div>
+            <div id="c7r9"></div>
+            <div id="c8r9"></div>
+            <div id="c9r9"></div>
+            <div id="c10r9"></div>
+
+            <div class="leftkey" id="c0r10">{{yLabs[10]}}</div>
+            <div id="c1r10"></div>
+            <div id="c2r10"></div>
+            <div id="c3r10"></div>
+            <div id="c4r10"></div>
+            <div id="c5r10"></div>
+            <div id="c6r10"></div>
+            <div id="c7r10"></div>
+            <div id="c8r10"></div>
+            <div id="c9r10"></div>
+            <div id="c10r10"></div>
+        </section>
+    </div>
+    <div id="instructions">
+        <p id="instructions-text">
+        Left click a tile you think is right to check whether
+		it is correct. 
+		<br>
+		<br>
+		Use alt + left click to mark a tile you think may be correct.
+        <br>
+		<br>		
+        Numbers at the top correspond to the columns while those
+		on the left correspond to the rows.
+		<br>
+		<br>
+		The numerical value indicates a group of tiles. A 10
+		would indicate a group of 10 shaded tiles. When there is more
+		than one value, the value themselves determine size of tile
+		groupings. There can be any number of unshaded tiles between the
+		groups, but there MUST be at least one unshaded tile between groupings.
+		<br>
+		<br>
+		For a video explanation of how the game functions, please click the following link:
+		<a href="">Tutorial</a>
+        </p>
+    </div>
+    <br>
+	<center><article>
+		<button id="restart" onClick="cleanBoard()">Restart</button>
+	</article></center>
+</body>
+</html>
+
+<script>
+/*----- constants -----*/
+const solution = {{puzzle}};
+//console.log(solution);
+
+/*----- app's state variables -----*/
+var board;
+var incorrectCounter = 0;
+
+/*----- cached element references -----*/
+var cells = document.querySelectorAll('div');
+var headline = document.getElementById('headline');
+var puzzleBoard = document.getElementById('puzzleboard');
+var restartButton = document.getElementById('restart');
+var fullPuzzle = document.getElementById('puzzle-full');
+var fullInstructions = document.getElementById('instructions');
+//var checkButton = document.getElementById('checkbut');
+
+/*----- event listeners -----*/
+puzzleBoard.addEventListener('click', handleClick);
+restartButton.addEventListener('click', cleanBoard);
+//checkButton.addEventListener('click', checkWin);
+
+/*----- functions -----*/
+initialize();
+
+// Swap gameboard for instructions on click 
+function toggleInstructions() {
+    if (!fullPuzzle.style.display) {
+        fullPuzzle.style.display = 'none';
+        fullInstructions.style.display = 'block'
+    } else if (fullPuzzle.style.display == 'none') {
+        fullPuzzle.style.display = 'block';
+        fullInstructions.style.display = 'none'
+    } else if (fullPuzzle.style.display == 'block') {
+        fullPuzzle.style.display = 'none';
+        fullInstructions.style.display = 'block'
+    }
+}
+
+//toggle instructions works
+
+// Make all cells white on restart
+function cleanBoard() {
+    initialize()
+    cells.forEach(function (el) {el.style.backgroundColor = ''})
+    headline.innerHTML = 'Nonogram Puzzle';
+}
+
+//clean board function works
+
+// Make tiles toggle white/black AND toggle cell value 0/1
+function handleClick(evt) {
+    const marker = evt.target;
+    var markerString = marker.id;
+    var rowArr = markerString.split('r');
+    var rowIdx = rowArr[rowArr.length - 1];
+    rowArr.pop();
+    var colIdx = rowArr.join('').replace('c', '');
+    if (colIdx != 0) {
+        if (evt.altKey === false) {
+            if (!marker.style.backgroundColor || marker.style.backgroundColor == 'pink') {
+				/*
+				If the tile is correct in the solution, mark it as green
+				and then mark the board variable accordingly. Otherwise,
+				mark the tile as red and mark the board accordingly.
+				*/
+				if(solution[rowIdx][colIdx] == 1) {
+					marker.style.backgroundColor = '#00A36C'
+					board[rowIdx][colIdx] = 1;
+				}
+				else {
+					marker.style.backgroundColor = '#FF6B6B'
+					board[rowIdx][colIdx] = 0;
+					incorrectCounter += 1;
+					//console.log(incorrectCounter);
+				} 
+            }
+        } else {
+			/*
+			If the tile is not filled, and the user alt clicked, make it pink.
+			If the tile is pink, and the user alt clicked, make it blank.
+			*/
+			if (!marker.style.backgroundColor) {
+				marker.style.backgroundColor = 'pink'
+				board[rowIdx][colIdx] = 0;
+			}
+			
+			else if (marker.style.backgroundColor == 'pink') {
+				marker.style.backgroundColor = ''
+				board[rowIdx][colIdx] = 0;
+			}
+        }
+    }
+    checkWin()
+	//console.log(board);
+}
+
+// Check if current board array matches solution array
+function checkWin() {
+    if (board.toString() == solution.toString()) {
+		if(incorrectCounter > 0) {
+			headline.innerHTML = 'Congrats! You Won but Made ' + incorrectCounter + ' Mistakes D:';
+			alert("You Won! Try to make less mistakes next time!");
+			incorrectCounter = 0
+		}
+		else {
+			headline.innerHTML = 'Congrats! You Won with No Mistakes! :D';
+			alert("You Won! Fantastic Job!");
+			incorrectCounter = 0
+		}
+    } else if (board.toString() !== solution.toString()) {
+        headline.innerHTML = 'Nonogram Puzzle';
+		/*
+		This was supposed to make them restart if they make more than 3 mistakes, however for whatever
+		reason despite the page resetting, the user can no longer click any spots on the puzzle, so 
+		I have scrapped this idea and instead just tell them to try and make less mistakes next time.
+		-Jaken
+		if(incorrectCounter > 3) {
+			cleanBoard()
+		}
+		*/
+    }
+}
+
+// Initialize board
+function initialize() {
+    board = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // column 
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // column 1
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // column 2
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // column 3
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // column 4
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // column 5
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // column 6
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // column 7
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // column 8
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // column 9
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  // column 10
+    ];
+}
+</script>
