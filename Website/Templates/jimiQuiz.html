@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{{url_for('static', filename='wow.css')}}">
+  <link href="{{url_for('static', filename='textgamestyles2.css')}}" rel="stylesheet">
+  <title>Jimihen Quiz</title>
+</head>
+<style>
+.flex-container {
+    display: flex;
+	justify-content: center;
+}
+
+.flex-child {
+    width: 400px;
+	height: 200px;
+	border: 1px solid black;
+	margin: 0;
+	padding: 0;
+	align-items: center;
+	margin-right: 20px;
+}
+
+.editbtn {
+      width: 300px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px; 
+      font-size: 16px;
+      color: white;
+	  background-color: #d5cb9c;
+      cursor: pointer;
+}
+.editbtn:hover {
+      background: grey;
+}
+</style>
+<body>
+  <div class="vnContainer">
+        <canvas id="VNScreen" class="vnScreen"  width="800" height="600"></canvas>
+  </div>
+  
+  <br>
+
+  <center>
+  <div class="container">
+    <div id="text">Text</div>
+    <div id="option-buttons" class="btn-grid">
+      <button class="btn">Option 1</button>
+      <button class="btn">Option 2</button>
+      <button class="btn">Option 3</button>
+      <button class="btn">Option 4</button>
+    </div>
+  </div>
+  </center>
+  
+  <br>
+  <center>
+  <div class="flex-container">
+		<div class="flex-child">
+			<h4><u>FAST TRAVEL</u></h4>
+			<a href="http://127.0.0.1:5000/play" class = "editbtn">Office</a>
+			<a href="http://127.0.0.1:5000/playh" class = "editbtn">Hallway</a>
+			<br>
+			<br>
+			<br>
+			<a href="http://127.0.0.1:5000/playc" class = "editbtn">Classroom</a>
+			<a href="http://127.0.0.1:5000/playsy" class = "editbtn">Schoolyard</a>
+		</div>
+  </div>
+  </center>
+</body>
+
+<script>
+const canvas = document.querySelector("canvas");
+const ctx = canvas.getContext("2d");
+
+const roomImage = new Image();
+roomImage.src = "{{url_for('static', filename='Background_Jimihen.jpg')}}";
+
+const characterImage = new Image();
+characterImage.src = "{{url_for('static', filename='JimiVN.png')}}";
+
+ctx.drawImage(roomImage, 0, 0);
+ctx.drawImage(characterImage, 0, 0);
+</script>
+
+<script>
+const textElement = document.getElementById('text')
+const optionButtonsElement = document.getElementById('option-buttons')
+
+let state = {}
+
+function startGame() {
+	state = {}
+	showTextNode(1)
+}
+
+function showTextNode(textNodeIndex) {
+	const textNode = textNodes.find(textNode => textNode.id === textNodeIndex)
+	textElement.innerText = textNode.text
+	while (optionButtonsElement.firstChild) {
+		optionButtonsElement.removeChild(optionButtonsElement.firstChild)
+	}
+
+	textNode.options.forEach(option => {
+		if (showOption(option)) {
+		  const button = document.createElement('button')
+		  button.innerText = option.text
+		  button.classList.add('btn')
+		  button.addEventListener('click', () => selectOption(option))
+		  optionButtonsElement.appendChild(button)
+		}
+	})
+}
+
+function showOption(option) {
+	return option.requiredState == null || option.requiredState(state)
+}
+
+function selectOption(option) {
+	const nextTextNodeId = option.nextText
+	if (nextTextNodeId <= 0) {
+		return startGame()
+	}
+	state = Object.assign(state, option.setState)
+	showTextNode(nextTextNodeId)
+}
+
+const textNodes = [
+	{
+		id: 1,
+		text: '{{question[1]}}',
+		options: [
+		  {
+			text: '{{question[5]}}',
+			nextText: 3
+		  },
+		  {
+			text: '{{question[3]}}',
+			nextText: 2
+		  },
+		  {
+			text: '{{question[4]}}',
+			nextText: 2
+		  },
+		  {
+			text: '{{question[2]}}',
+			nextText: 2
+		  }
+		]
+	},
+	{
+		id: 2,
+		text: 'That is not the right answer! Please try again!',
+		options: [
+		  {
+			text: 'Try Again',
+			nextText: -1
+		  }
+		]
+	},
+	{
+		id: 3,
+		text: 'That is correct! Use the button below to return to the game!',
+	}
+]
+
+	startGame()	
+  </script>
+
+</html>
