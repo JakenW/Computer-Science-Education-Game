@@ -13,7 +13,7 @@ print("Databased opened")
 conn.execute('''CREATE TABLE ACCOUNTS
          (ID INTEGER PRIMARY KEY     AUTOINCREMENT,
          ACCNAME           TEXT    NOT NULL,
-         ACCPW           TEXT    NOT NULL);''')   
+         ACCPW           TEXT    NOT NULL);''')
   
 #MCO = Multiple Choice Option         
 conn.execute('''CREATE TABLE QUESTIONS
@@ -22,9 +22,9 @@ conn.execute('''CREATE TABLE QUESTIONS
          MCO1           TEXT    NOT NULL,
          MCO2           TEXT    NOT NULL,
          MCO3           TEXT    NOT NULL,
-         MCO4           TEXT    NOT NULL,
          ANSWER           TEXT    NOT NULL);''')
-       
+
+ 
 conn.execute('''CREATE TABLE PUZZLES
          (ID INTEGER PRIMARY KEY     AUTOINCREMENT,
          ROW0           TEXT    NOT NULL,
@@ -38,5 +38,6 @@ conn.execute('''CREATE TABLE PUZZLES
          ROW8           TEXT    NOT NULL,
          ROW9           TEXT    NOT NULL,
          ROW10           TEXT    NOT NULL);''')
+
 
 print("table created successfully")

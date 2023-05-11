@@ -7,15 +7,15 @@ Created on Mon Feb  6 16:31:31 2023
 
 from flask import Flask, redirect, url_for, render_template, request, session
 import sqlite3 as sql
-import json
 import sys
 import logging
+import random
 
 #Creating the flask app
 app = Flask(__name__)
 
-#
-logging.basicConfig(filename='data.log', level=logging.DEBUG)
+#Logging to help troubleshoot, commented out for final submission
+#logging.basicConfig(filename='data.log', level=logging.DEBUG)
 
 #Creating a secret key for the flask app. Required when using sessions.
 app.secret_key = "thebestsecretkeyintheworldyep100percentthebestnodoubt"
@@ -112,10 +112,110 @@ def login():
     #connect to db, fetch info from db, verify matching (if not go back to login main), let them in 
     
     
-#Route to main game
+#Route to starting position of the game (the teachers office)
 @app.route("/play/")
 def play():
-    return render_template("game.html")
+    return render_template("gameOffice.html")
+
+#Route to the classroom of the school
+@app.route("/playc/")
+def playc():
+    return render_template("gameClassroom.html")
+
+#Route to the hallway of the school
+@app.route("/playh/")
+def playh():
+    return render_template("gameHallway.html")
+
+#Route to the hallway of the school
+@app.route("/playsy/")
+def playsy():
+    return render_template("gameSchoolyard.html")
+
+#Route to the question component with Jimihen (character)
+@app.route("/jimi/")
+def jimi():
+    #Database connection to obtain question data
+    con = sql.connect("dormagoo.db")
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    
+    #get number of questions in database
+    cur.execute("select COUNT(id) from QUESTIONS")
+    numQuests = cur.fetchone()
+    numQuests = int(numQuests[0])
+    #logging.info(numQuests)
+    
+    #compute a random number and take the question at the corresponding index position
+    questionNum = random.randint(1, numQuests)
+    #logging.info(questionNum)
+    cur.execute("select * from QUESTIONS where ID=?", (questionNum,))
+    quizQuestion = cur.fetchone()
+    
+    return render_template("jimiQuiz.html", question = quizQuestion)
+
+#Route to the question component with Aqua (character)
+@app.route("/aqua/")
+def aqua():
+    #Database connection to obtain question data
+    con = sql.connect("dormagoo.db")
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    
+    #get number of questions in database
+    cur.execute("select COUNT(id) from QUESTIONS")
+    numQuests = cur.fetchone()
+    numQuests = int(numQuests[0])
+    #logging.info(numQuests)
+    
+    #compute a random number and take the question at the corresponding index position
+    questionNum = random.randint(1, numQuests)
+    #logging.info(questionNum)
+    cur.execute("select * from QUESTIONS where ID=?", (questionNum,))
+    quizQuestion = cur.fetchone()
+    return render_template("aquaQuiz.html", question = quizQuestion)
+
+#Route to the question component with Ruby (character)
+@app.route("/ruby/")
+def ruby():
+    #Database connection to obtain question data
+    con = sql.connect("dormagoo.db")
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    
+    #get number of questions in database
+    cur.execute("select COUNT(id) from QUESTIONS")
+    numQuests = cur.fetchone()
+    numQuests = int(numQuests[0])
+    #logging.info(numQuests)
+    
+    #compute a random number and take the question at the corresponding index position
+    questionNum = random.randint(1, numQuests)
+    #logging.info(questionNum)
+    cur.execute("select * from QUESTIONS where ID=?", (questionNum,))
+    quizQuestion = cur.fetchone()
+    return render_template("rubyQuiz.html", question = quizQuestion)
+
+#Route to the question component with Ai (character)
+@app.route("/ai/")
+def ai():
+    #Database connection to obtain question data
+    con = sql.connect("dormagoo.db")
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    
+    #get number of questions in database
+    cur.execute("select COUNT(id) from QUESTIONS")
+    numQuests = cur.fetchone()
+    numQuests = int(numQuests[0])
+    #logging.info(numQuests)
+    
+    #compute a random number and take the question at the corresponding index position
+    questionNum = random.randint(1, numQuests)
+    #logging.info(questionNum)
+    cur.execute("select * from QUESTIONS where ID=?", (questionNum,))
+    quizQuestion = cur.fetchone()
+    return render_template("aiQuiz.html", question = quizQuestion)
 
 
 #This route allows the user to create questions which get added to the database
@@ -128,80 +228,31 @@ def createquestion():
         mco1 = request.form["mco1"]                   #option 1
         mco2 = request.form["mco2"]                   #option 2
         mco3 = request.form["mco3"]                   #option 3
-        mco4 = request.form["mco4"]                   #option 4
         answer = request.form["answer"]               #correct answer
         
-        #remove potential trailing white space on the answer to check if it is an acceptable answer
+        '''
+        Remove trailing or leading white space from form data
+        '''
+        question = question.strip()
+        mco1 = mco1.strip()
+        mco2 = mco2.strip()
+        mco3 = mco3.strip()
         answer = answer.strip()
-        
-        '''
-        Iterate through a list of the possible correct answer choices a user
-        could input. If the user's input is not a valid answer, redirect them
-        to an unsuccessful page telling them they entered an invalid answer.
-        
-        Otherwise, continue to adding to the database
-        '''
-        possibleAnswers = ["1", "2", "3", "4"]
-        isPossibleAnswer = False
-        for i in range(len(possibleAnswers)):
-            if(answer == possibleAnswers[i]):
-                isPossibleAnswer = True
-        
-        if(isPossibleAnswer == False):
-            return render_template("question_unsuccessans.html")
 
         #if we have nade it to this line, now add question to database with user input information
         con = sql.connect("dormagoo.db")
         cur = con.cursor()
-        cur.execute("insert into QUESTIONS(QUEST, MCO1, MCO2, MCO3, MCO4, ANSWER) values (?,?,?,?,?,?)", (question, mco1, mco2, mco3, mco4, answer))
+        cur.execute("insert into QUESTIONS(QUEST, MCO1, MCO2, MCO3, ANSWER) values (?,?,?,?,?)", (question, mco1, mco2, mco3, answer))
         con.commit()
         
         return render_template("question_confirm.html")
     
     return render_template("createquestion.html")
-    
-#This route tests the visual novel aspect created by Christina
-@app.route("/VNtest")
-def VNtest():
-    return render_template("vntest.html")
-
-#This route tests the question proposal aspect created by Christina
-@app.route("/MCtest")
-def MCtest():
-    return render_template("mctest.html")
-
-@app.route("/puzzletest2/")
-def puzzletest2():
-    con = sql.connect("dormagoo.db")
-    cur = con.cursor()
-    cur.execute("select * from PUZZLES where ID = ?", (1, ))
-    testPuzzle = cur.fetchone()
-    
-    #Obtain data from the db and make it integer lists
-    puzzleRowList = []
-    for i in range(len(testPuzzle)):
-        if(i == 0):
-            continue
-        else:
-            currentRow = testPuzzle[i].split(" ")
-            currentRow = list(map(int, currentRow))
-            puzzleRowList.append(currentRow)
-    
-    #Generate the labels needed for the puzzle
-    xLabels = createXLabels(puzzleRowList)
-    yLabels = createYLabels(puzzleRowList)
-    
-    return render_template("puzzletest2.html", puzzle = puzzleRowList, xLabs = xLabels, yLabs = yLabels)
-
-#This route tests creating a puzzle 
-@app.route("/createpuzzle")
-def createpuzzle():
-    return render_template("makepuzzle.html")
 
 
 #This route handles the request sent from the create puzzle page
-@app.route("/userPuzzleTest2", methods=["POST", "GET"])
-def userPuzzleTest2():
+@app.route("/createpuzzle", methods=["POST", "GET"])
+def createpuzzle():
     #If the request method is post, we want to put the user's puzzle in the database
     #All logging comments have been commented out but were essential for troubleshooting
     if request.method == "POST":
@@ -283,7 +334,7 @@ def playpuzzle(pid):
     xLabels = createXLabels(puzzleRowList)
     yLabels = createYLabels(puzzleRowList)
     
-    return render_template("puzzletest2.html", puzzle = puzzleRowList, xLabs = xLabels, yLabs = yLabels)
+    return render_template("playpuzzle.html", puzzle = puzzleRowList, xLabs = xLabels, yLabs = yLabels)
 
 
 #These functions are used to generate the text labels for the puzzle
