@@ -1,16 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Login Success</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login Success</title>
+<link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
 </head>
-<body>
-<center>
-  LOGIN COMPLETE
-  <br>
-  <br>
-  <button onclick="window.location.href = 'http://127.0.0.1:5000/';">HOME</button>
 
-</center>
+<style>
+body {
+font-family: Arial;
+}
+</style>
+
+<body>
+<!-- Navigation Bar -->
+<div class="topnav">
+    <ul>
+      <a class="active" href="http://127.0.0.1:5000/">HOME</a>
+      <a href="http://127.0.0.1:5000/register">REGISTER</a>
+      <a href="http://127.0.0.1:5000/login">LOGIN</a>
+	  <a href="http://127.0.0.1:5000/createquestion">CREATE QUESTION</a>
+     <a href="http://127.0.0.1:5000/play">GAME</a>
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn">PUZZLE</a>
+      <div class="dropdown-content">
+        <a href="http://127.0.0.1:5000/puzzles">Puzzle Library</a>
+        <a href="http://127.0.0.1:5000/createpuzzle">Create a Puzzle</a>
+      </div>
+    </li>
+    </ul>
+</div>
+
+<center><h2>Login Successful!</h2></center>
+<center><p>You may use the navbar to go to your desired page on the site!</p></center>
+
 </body>
 </html>
