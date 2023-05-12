@@ -288,7 +288,7 @@ def createpuzzle():
                 (puzzleRows[0], puzzleRows[1], puzzleRows[2], puzzleRows[3], puzzleRows[4], puzzleRows[5], puzzleRows[6], puzzleRows[7], puzzleRows[8], puzzleRows[9], puzzleRows[10]))
         con.commit()
         
-        return render_template("question_confirm.html")
+        return render_template("puzzleSuccess.html")
     
     
     return render_template("makepuzzle2.html")
